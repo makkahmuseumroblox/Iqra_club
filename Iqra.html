@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة نادي اقرأ - ثانوية المدينة المنورة للبنين</title>
+    <!-- Google Fonts: Amiri & Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,700;1,400&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --dark-ink: #0d131f;
+            --dark-card: #161e2e;
+            --saudi-purple: #4c1d95;
+            --saudi-purple-light: #6d28d9; 
+            --gold-main: #d99e2b;
+            --gold-light: #fef3c7;
+            --emerald-main: #059669;
+            --rose-main: #e11d48;
+            --text-light: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background-color: var(--dark-ink); 
+            color: var(--text-light); 
+            font-family: 'Cairo', sans-serif;
+            direction: rtl; 
+            padding-bottom: 40px; 
+        }
+
+        header {
+            background: linear-gradient(135deg, #2e1065, var(--saudi-purple));
+            color: white; 
+            padding: 25px 15px; 
+            text-align: center;
+            border-bottom: 4px solid var(--gold-main); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .header-title {
+            font-family: 'Amiri', serif;
+            font-size: 2.2rem;
+            color: var(--gold-light);
+            margin-bottom: 5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        header p { font-size: 0.85rem; opacity: 0.9; }
+
+        .date-badge {
+            background: rgba(0, 0, 0, 0.3); 
+            display: inline-block; 
+            padding: 6px 16px;
+            border-radius: 20px; 
+            margin-top: 12px; 
+            font-size: 0.8rem; 
+            border: 1px solid var(--gold-main);
+            color: var(--gold-light);
+        }
+
+        .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
+
+        /* Notification Banner */
+        .alert-banner {
+            background: linear-gradient(135deg, #7f1d1d, #991b1b);
+            border: 1px solid var(--rose-main);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+        }
+
+        .tabs-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: var(--dark-card);
+            color: var(--text-muted);
+            border: 1px solid #2d3748;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--saudi-purple);
+            color: white;
+            border-color: var(--gold-main);
+            box-shadow: 0 2px 8px rgba(109, 40, 217, 0.4);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .card {
+            background: var(--dark-card); 
+            border-radius: 18px; 
+            padding: 22px; 
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+        .card-gold { 
+            background: linear-gradient(135deg, var(--saudi-purple), #2e1065); 
+            border: 1px solid var(--gold-main);
+            color: white; 
+        }
+
+        .card-borrow {
+            background: linear-gradient(135deg, #1e1b4b, #312e81);
+            border: 1px solid var(--gold-main);
+        }
+
+        .card-title {
+            font-size: 1.15rem; 
+            font-weight: bold; 
+            color: var(--gold-light);
+            margin-bottom: 15px; 
+            border-bottom: 1px solid rgba(217, 158, 43, 0.3); 
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .form-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+        
+        input, select {
+            padding: 10px 14px; 
+            border-radius: 10px; 
+            border: 1px solid #2d3748;
+            background: #0f172a;
+            color: white;
+            font-size: 0.85rem; 
+            outline: none; 
+            flex: 1; 
+            min-width: 140px;
+        }
+
+        input:focus, select:focus { border-color: var(--gold-main); }
+
+        .btn {
+            padding: 9px 16px; border-radius: 10px; border: none; font-weight: bold;
+            font-size: 0.85rem; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block;
+        }
+        .btn-purple { background: var(--saudi-purple-light); color: white; }
+        .btn-gold { background: var(--gold-main); color: #000; }
+        .btn-emerald { background: var(--emerald-main); color: white; }
+        .btn-rose { background: var(--rose-main); color: white; }
+        .btn-dark { background: #1e293b; color: var(--text-light); border: 1px solid #334155; }
+
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: right; }
+        th, td { padding: 12px; border-bottom: 1px solid #1e293b; }
+        th { background: #0f172a; color: var(--gold-main); font-size: 0.8rem; }
+
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; background: #1e293b; color: var(--text-muted); }
+        .badge-code { background: var(--gold-main); color: #000; font-weight: 800; font-family: monospace; }
+        .badge-overdue { background: rgba(225, 29, 72, 0.2); color: #f43f5e; border: 1px solid var(--rose-main); }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; visibility: hidden; opacity: 0; transition: all 0.2s ease-in-out;
+        }
+        .modal-overlay.active { visibility: visible; opacity: 1; }
+        .modal-content {
+            background: var(--dark-card); padding: 25px; border-radius: 18px; width: 90%; max-width: 450px;
+            border: 1px solid var(--gold-main); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        footer { text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">نادي اقرأ 📖</div>
+        <p>ثانوية المدينة المنورة للبنين | المنصة الشاملة للأنشطة والإعارة</p>
+        <div class="date-badge">📅 تاريخ الجهاز اليوم: <span id="deviceDateDisplay">جاري التحميل...</span></div>
+    </header>
+
+    <div class="container">
+
+        <!-- System Overdue Notification Alert Banner -->
+        <div id="overdueAlert" class="alert-banner">
+            <div>
+                <strong>⚠️ تنبيه إعارة الكتب:</strong>
+                <span id="overdueText">توجد كتب متأخرة عن تاريخ الاسترجاع المحُدد!</span>
+            </div>
+            <button onclick="switchTab('tab-borrow')" class="btn btn-gold" style="font-size:0.75rem;">عرض الكتب المتبقية</button>
+        </div>
+
+        <!-- Quick Code Self Check-in Banner -->
+        <div class="card card-gold">
+            <h2 style="font-size: 1.15rem; margin-bottom: 6px; color: var(--gold-light);">⚡ تحضير سريع بـ (كود الطالب)</h2>
+            <p style="font-size: 0.8rem; margin-bottom: 12px; opacity: 0.85;">ادخل كودك الخفيف (مثلاً: أ-101 أو 7) لتأكيد حضورك اليوم فور دخولك المكتبة</p>
+            <form onsubmit="handleQuickCodeCheckIn(event)" class="form-grid">
+                <input type="text" id="quickCodeInput" required placeholder="ادخل كودك (مثل: أ-101 أو 7)" style="font-weight: bold; text-align: center;">
+                <select id="quickCodeStatus">
+                    <option value="present">حاضر ✅</option>
+                    <option value="absent">غائب ❌</option>
+                </select>
+                <button type="submit" class="btn btn-gold">تسجيل الحضور</button>
+            </form>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('tab-attendance')">📋 سجل الطلاب والكود</button>
+            <button class="tab-btn" onclick="switchTab('tab-borrow')">📚 إعارة الكتب والتنبيهات</button>
+            <button class="tab-btn" onclick="switchTab('tab-competitions')">🏆 مسابقات النادي والنقاط</button>
+            <button class="tab-btn" onclick="switchTab('tab-calendar')">🗓️ الجدول والتقويم</button>
+            <button class="tab-btn" onclick="switchTab('tab-meals')">🍕 كشف الوجبات</button>
+            <button class="tab-btn" onclick="switchTab('tab-admin')">🛡️ لوحة الإدارة</button>
+        </div>
+
+        <!-- TAB 1: ATTENDANCE & CODE DIRECTORY -->
+        <div id="tab-attendance" class="tab-content active">
+            <div class="card">
+                <div class="card-title">
+                    <span>📋 دليل الطلاب وأكواد الحضور</span>
+                    <div>
+                        <button onclick="openStudentModal()" class="btn btn-emerald" style="font-size: 0.75rem;">+ إضافة طالب جديد</button>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;">
+                    <select id="daySelect" onchange="changeDay(this.value)" style="max-width: 150px;">
+                        <option value="Monday">يوم الإثنين</option>
+                        <option value="Tuesday">يوم الثلاثاء</option>
+                        <option value="Wednesday">يوم الأربعاء</option>
+                    </select>
+                    <button onclick="markAllStatus('present')" class="btn btn-dark">الكل حاضر ✅</button>
+                    <button onclick="markAllStatus('absent')" class="btn btn-dark">الكل غائب ❌</button>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">كود الطالب</th>
+                                <th>اسم الطالب</th>
+                                <th>الصف / الفصل</th>
+                                <th style="text-align: center;">تكرار الغياب</th>
+                                <th style="text-align: center;">التحضير اليوم</th>
+                                <th>ملاحظات</th>
+                                <th style="text-align: center;">الواتساب والتعديل</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: BOOK BORROWING SERVICE (NEW) -->
+        <div id="tab-borrow" class="tab-content">
+            <div class="card card-borrow">
+                <div class="card-title">📖 خدمة إعارة الكتب ومتابعة تاريخ الإرجاع</div>
+                <form onsubmit="addBorrowedBook(event)" class="form-grid" style="margin-bottom: 15px;">
+                    <input type="text" id="bookTitle" required placeholder="اسم الكتاب المستعار">
+                    <input type="text" id="borrowerName" required placeholder="اسم الطالب المستعير">
+                    <input type="text" id="borrowerClass" required placeholder="الصف والفرع">
+                    <input type="tel" id="borrowerPhone" placeholder="رقم الواتساب (05x)">
+                    <input type="date" id="returnDate" required>
+                    <button type="submit" class="btn btn-gold">تسجيل الإعارة</button>
+                </form>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الكتاب المستعار</th>
+                                <th>اسم الطالب المستعير</th>
+                                <th>الصف</th>
+                                <th style="text-align: center;">تاريخ الإرجاع المحدد</th>
+                                <th style="text-align: center;">الحالة والتنبيه</th>
+                                <th style="text-align: center;">إرجاع أو تواصل</th>
+                            </tr>
+                        </thead>
+                        <tbody id="borrowTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: COMPETITIONS & POINTS SYSTEM (NEW) -->
+        <div id="tab-competitions" class="tab-content">
+            <div class="card">
+                <div class="card-title">🏆 مسابقات النادي (اقرأ كتابك ولخصه) ونقاط المجموعات</div>
+                <form onsubmit="addCompetition(event)" class="form-grid" style="margin-bottom: 15px;">
+                    <input type="text" id="compName" required placeholder="اسم المسابقة / الفريق">
+                    <input type="text" id="compStudents" required placeholder="المشاركون / المجموعات">
+                    <input type="text" id="compSupervisor" required placeholder="المشرف المسؤول">
+                    <button type="submit" class="btn btn-purple">إضافة للفهرس</button>
+                </form>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>اسم المسابقة / الفريق</th>
+                                <th>الأعضاء المشاركون</th>
+                                <th>المشرف</th>
+                                <th style="text-align: center;">مجموع النقاط</th>
+                                <th style="text-align: center;">تحديث النقاط</th>
+                                <th style="text-align: center;">إدارة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="competitionsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: SCHEDULE & CALENDAR -->
+        <div id="tab-calendar" class="tab-content">
+            <div class="card">
+                <div class="card-title">🗓️ الجدول الأسبوعي وتقويم الأنشطة والمناسبات</div>
+                
+                <form onsubmit="addCalendarEvent(event)" class="form-grid" style="margin-bottom: 15px;">
+                    <input type="text" id="eventTitle" required placeholder="عنوان المناسبة (مثال: حفل الافتتاح 12 أكتوبر)">
+                    <input type="date" id="eventDate" required>
+                    <select id="eventType">
+                        <option value="افتتاح">حفل الافتتاح</option>
+                        <option value="مسابقة">مسابقة خاصة</option>
+                        <option value="مناسبة وطنية">مناسبة وطنية</option>
+                        <option value="إجازة">إجازة رسمية</option>
+                    </select>
+                    <button type="submit" class="btn btn-purple">إضافة للتقويم</button>
+                </form>
+
+                <div id="calendarEventsList"></div>
+            </div>
+        </div>
+
+        <!-- TAB 5: MEALS -->
+        <div id="tab-meals" class="tab-content">
+            <div class="card">
+                <div class="card-title">🍕 كشف مشاركات الوجبات والأنشطة</div>
+                <form onsubmit="addMeal(event)" class="form-grid" style="margin-bottom: 15px;">
+                    <input type="text" id="mealStu" required placeholder="اسم الطالب">
+                    <input type="text" id="mealItem" required placeholder="نوع الوجبة أو المشاركة">
+                    <button type="submit" class="btn btn-emerald">إضافة الوجبة</button>
+                </form>
+                <div id="mealsContainer"></div>
+            </div>
+        </div>
+
+        <!-- TAB 6: ADMIN -->
+        <div id="tab-admin" class="tab-content">
+            <div class="card">
+                <div class="card-title">🛡️ إدارة النادي والقيادة واللجان المعتمدة</div>
+                <div class="form-grid" style="margin-bottom: 15px;">
+                    <div>
+                        <label style="font-size: 0.75rem; color: var(--gold-main); font-weight: bold;">أمين المكتبة العامة</label>
+                        <input type="text" id="adminLibrarian" onchange="updateAdminStaff()">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.75rem; color: var(--gold-main); font-weight: bold;">مدير القسم المعتمد</label>
+                        <input type="text" id="adminHead" onchange="updateAdminStaff()">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.75rem; color: var(--gold-main); font-weight: bold;">الإشراف الأمني</label>
+                        <input type="text" id="adminSecurity" onchange="updateAdminStaff()">
+                    </div>
+                </div>
+
+                <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+                    <h4 style="font-size: 0.85rem; color: var(--gold-light); margin-bottom: 8px;">إضافة لوحة تحكم للجان والمجموعات الفرعية الإضافية:</h4>
+                    <form onsubmit="addCustomGroup(event)" class="form-grid">
+                        <input type="text" id="groupName" required placeholder="اسم اللجنة الجديدة">
+                        <input type="text" id="groupLeader" required placeholder="المشرف المسؤول">
+                        <button type="submit" class="btn btn-purple">إضافة اللجنة</button>
+                    </form>
+                    <div id="customGroupsList" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <footer>جميع الحقوق محفوظة © ثانوية المدينة المنورة للبنين - نادي اقرأ</footer>
+
+    </div>
+
+    <!-- Modal Form For Adding / Editing Students -->
+    <div id="studentModalOverlay" class="modal-overlay">
+        <div class="modal-content">
+            <h3 style="color:var(--gold-light); margin-bottom: 15px;">➕ إضافة طالب جديد</h3>
+            <form onsubmit="saveNewStudent(event)">
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.8rem;">اسم الطالب الثلاثي (إجباري):</label>
+                    <input type="text" id="modalStuName" required placeholder="مثال: فيصل فضل" style="width:100%; margin-top:4px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.8rem;">الصف والفرع (إجباري):</label>
+                    <input type="text" id="modalStuClass" required placeholder="مثال: ثالث ثانوي - 1" style="width:100%; margin-top:4px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.8rem;">كود الطالب المختصر (اختياري / تلقائي):</label>
+                    <input type="text" id="modalStuCode" placeholder="مثال: أ-101 أو 7" style="width:100%; margin-top:4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-size: 0.8rem;">رقم الجوال للواتساب (اختياري):</label>
+                    <input type="tel" id="modalStuPhone" placeholder="05xxxxxxxx (يمكن تركه فارغاً)" style="width:100%; margin-top:4px;">
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="submit" class="btn btn-emerald">حفظ الطالب</button>
+                    <button type="button" onclick="closeStudentModal()" class="btn btn-dark">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const todayDateStr = new Date().toISOString().split('T')[0];
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('deviceDateDisplay').innerText = now.toLocaleDateString('ar-SA', options);
+
+        let students = JSON.parse(localStorage.getItem('iqra_master_students')) || [
+            { id: "1", code: "أ-101", name: "فيصل فضل", className: "ثالث ثانوي", phone: "0501234567" },
+            { id: "2", code: "أ-102", name: "محمد العمري", className: "أول ثانوي", phone: "0559876543" }
+        ];
+
+        let borrowedBooks = JSON.parse(localStorage.getItem('iqra_master_borrowed')) || [
+            { id: 1, title: "رحلة إلى الغد", name: "فيصل فضل", className: "ثالث ثانوي", phone: "0501234567", returnDate: todayDateStr }
+        ];
+
+        let competitions = JSON.parse(localStorage.getItem('iqra_master_competitions')) || [
+            { id: 1, name: "مسابقة اقرأ كتابك ولخصه", students: "مجموعة الأمل", supervisor: "أ. أحمد", points: 15 }
+        ];
+
+        let attendance = JSON.parse(localStorage.getItem('iqra_master_attendance')) || {};
+        let notes = JSON.parse(localStorage.getItem('iqra_master_notes')) || {};
+        let meals = JSON.parse(localStorage.getItem('iqra_master_meals')) || [];
+        let calendarEvents = JSON.parse(localStorage.getItem('iqra_master_calendar')) || [
+            { id: 1, title: "افتتاح نادي اقرأ الكبير 📖", date: "2026-10-12", type: "افتتاح" }
+        ];
+        let adminStaff = JSON.parse(localStorage.getItem('iqra_master_admin')) || {
+            librarian: "أ. أحمد الحربي", head: "أ. عبد الله الجهني", security: "قسم السلامة والمراقبة"
+        };
+        let customGroups = JSON.parse(localStorage.getItem('iqra_master_groups')) || [];
+
+        let currentDay = "Monday";
+
+        window.onload = function() {
+            document.getElementById('adminLibrarian').value = adminStaff.librarian;
+            document.getElementById('adminHead').value = adminStaff.head;
+            document.getElementById('adminSecurity').value = adminStaff.security;
+            renderAll();
+        };
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if (event) event.target.classList.add('active');
+        }
+
+        function saveAll() {
+            localStorage.setItem('iqra_master_students', JSON.stringify(students));
+            localStorage.setItem('iqra_master_borrowed', JSON.stringify(borrowedBooks));
+            localStorage.setItem('iqra_master_competitions', JSON.stringify(competitions));
+            localStorage.setItem('iqra_master_attendance', JSON.stringify(attendance));
+            localStorage.setItem('iqra_master_notes', JSON.stringify(notes));
+            localStorage.setItem('iqra_master_meals', JSON.stringify(meals));
+            localStorage.setItem('iqra_master_calendar', JSON.stringify(calendarEvents));
+            localStorage.setItem('iqra_master_admin', JSON.stringify(adminStaff));
+            localStorage.setItem('iqra_master_groups', JSON.stringify(customGroups));
+            renderAll();
+        }
+
+        function changeDay(day) { currentDay = day; renderAll(); }
+
+        function countAbsences(studentId) {
+            let count = 0;
+            Object.keys(attendance).forEach(d => { if (attendance[d][studentId] === 'absent') count++; });
+            return count;
+        }
+
+        function handleQuickCodeCheckIn(e) {
+            e.preventDefault();
+            const inputCode = document.getElementById('quickCodeInput').value.trim();
+            const status = document.getElementById('quickCodeStatus').value;
+
+            const student = students.find(s => s.code.toLowerCase() === inputCode.toLowerCase());
+            if (!student) {
+                alert("لم يتم العثور على هذا الكود! تأكد من الكود أو أضف الطالب أولاً.");
+                return;
+            }
+
+            if (!attendance[currentDay]) attendance[currentDay] = {};
+            attendance[currentDay][student.id] = status;
+
+            saveAll();
+            document.getElementById('quickCodeInput').value = '';
+            alert(`تم تحضير الطالب (${student.name}) بنجاح! ✅`);
+        }
+
+        function renderAttendance() {
+            const tbody = document.getElementById('attendanceTableBody');
+            const dayData = attendance[currentDay] || {};
+
+            tbody.innerHTML = students.map(s => {
+                const status = dayData[s.id] || 'none';
+                const absCount = countAbsences(s.id);
+                const noteVal = notes[s.id] || '';
+                const hasPhone = s.phone && s.phone.trim().length > 5;
+
+                return `
+                <tr>
+                    <td style="text-align:center;"><span class="badge badge-code">${s.code}</span></td>
+                    <td style="font-weight:bold;">${s.name}</td>
+                    <td>${s.className}</td>
+                    <td style="text-align:center;">
+                        <span class="badge ${absCount > 2 ? 'badge-absent' : ''}">${absCount} مرات</span>
+                    </td>
+                    <td style="text-align:center;">
+                        <button onclick="setAttendance('${s.id}', 'present')" class="btn ${status === 'present' ? 'btn-emerald' : 'btn-dark'}" style="padding:4px 8px; font-size:0.75rem;">حاضر ✅</button>
+                        <button onclick="setAttendance('${s.id}', 'absent')" class="btn ${status === 'absent' ? 'btn-rose' : 'btn-dark'}" style="padding:4px 8px; font-size:0.75rem;">غائب ❌</button>
+                    </td>
+                    <td>
+                        <input type="text" value="${noteVal}" onchange="saveNote('${s.id}', this.value)" placeholder="ملاحظة..." style="padding:4px 8px; font-size:0.75rem;">
+                    </td>
+                    <td style="text-align:center;">
+                        ${hasPhone ? `<a href="https://wa.me/966${s.phone.slice(1)}?text=${encodeURIComponent('السلام عليكم، نود تذكيركم بمواعيد وأنشطة نادي اقرأ بالمكتبة.')}" target="_blank" class="btn btn-emerald" style="padding:4px 8px; font-size:0.75rem;">واتساب</a>` : '<span style="color:var(--text-muted); font-size:0.7rem;">بلا جوال</span>'}
+                        <button onclick="deleteStudent('${s.id}')" class="btn btn-rose" style="padding:4px 8px; font-size:0.75rem; margin-right:4px;">حذف</button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function renderBorrowedBooks() {
+            const tbody = document.getElementById('borrowTableBody');
+            let hasOverdue = false;
+
+            tbody.innerHTML = borrowedBooks.map(b => {
+                const isOverdue = b.returnDate && b.returnDate < todayDateStr;
+                if (isOverdue) hasOverdue = true;
+
+                return `
+                <tr>
+                    <td style="font-weight:bold; color:var(--gold-light);">${b.title}</td>
+                    <td>${b.name}</td>
+                    <td>${b.className}</td>
+                    <td style="text-align:center;">${b.returnDate}</td>
+                    <td style="text-align:center;">
+                        <span class="badge ${isOverdue ? 'badge-overdue' : ''}">${isOverdue ? '⚠️ متأخر عن الإرجاع' : 'ساري الإعارة ✅'}</span>
+                    </td>
+                    <td style="text-align:center;">
+                        ${b.phone ? `<a href="https://wa.me/966${b.phone.slice(1)}?text=${encodeURIComponent('تذكير من مكتبة المدرسة بضرورة إرجاع كتاب: ' + b.title)}" target="_blank" class="btn btn-emerald" style="padding:4px 8px; font-size:0.75rem;">تذكير واتساب</a>` : ''}
+                        <button onclick="returnBook(${b.id})" class="btn btn-gold" style="padding:4px 8px; font-size:0.75rem; margin-right:4px;">تم الإرجاع 📥</button>
+                    </td>
+                </tr>`;
+            }).join('');
+
+            document.getElementById('overdueAlert').style.display = hasOverdue ? 'flex' : 'none';
+        }
+
+        function addBorrowedBook(e) {
+            e.preventDefault();
+            const title = document.getElementById('bookTitle').value;
+            const name = document.getElementById('borrowerName').value;
+            const className = document.getElementById('borrowerClass').value;
+            const phone = document.getElementById('borrowerPhone').value;
+            const returnDate = document.getElementById('returnDate').value;
+
+            borrowedBooks.push({ id: Date.now(), title, name, className, phone, returnDate });
+            saveAll();
+            document.getElementById('bookTitle').value = '';
+            document.getElementById('borrowerName').value = '';
+            document.getElementById('borrowerClass').value = '';
+            document.getElementById('borrowerPhone').value = '';
+        }
+
+        function returnBook(id) {
+            borrowedBooks = borrowedBooks.filter(b => b.id !== id);
+            saveAll();
+        }
+
+        function renderCompetitions() {
+            const tbody = document.getElementById('competitionsTableBody');
+            tbody.innerHTML = competitions.map(c => `
+                <tr>
+                    <td style="font-weight:bold; color:var(--gold-main);">${c.name}</td>
+                    <td>${c.students}</td>
+                    <td>${c.supervisor}</td>
+                    <td style="text-align:center; font-size:1.1rem; font-weight:bold; color:var(--gold-light);">${c.points || 0} نقطة</td>
+                    <td style="text-align:center;">
+                        <button onclick="addPoints(${c.id}, 5)" class="btn btn-emerald" style="padding:3px 8px; font-size:0.75rem;">+5</button>
+                        <button onclick="addPoints(${c.id}, -5)" class="btn btn-rose" style="padding:3px 8px; font-size:0.75rem;">-5</button>
+                    </td>
+                    <td style="text-align:center;">
+                        <button onclick="deleteCompetition(${c.id})" class="btn btn-rose" style="padding:3px 8px; font-size:0.75rem;">حذف</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function addPoints(id, pts) {
+            const comp = competitions.find(c => c.id === id);
+            if (comp) {
+                comp.points = Math.max(0, (comp.points || 0) + pts);
+                saveAll();
+            }
+        }
+
+        function addCompetition(e) {
+            e.preventDefault();
+            const name = document.getElementById('compName').value;
+            const studentsInput = document.getElementById('compStudents').value;
+            const supervisor = document.getElementById('compSupervisor').value;
+            competitions.push({ id: Date.now(), name, students: studentsInput, supervisor, points: 0 });
+            saveAll();
+            document.getElementById('compName').value = '';
+            document.getElementById('compStudents').value = '';
+            document.getElementById('compSupervisor').value = '';
+        }
+
+        function deleteCompetition(id) { competitions = competitions.filter(c => c.id !== id); saveAll(); }
+
+        function setAttendance(id, status) {
+            if (!attendance[currentDay]) attendance[currentDay] = {};
+            attendance[currentDay][id] = status;
+            saveAll();
+        }
+
+        function markAllStatus(status) {
+            if (!attendance[currentDay]) attendance[currentDay] = {};
+            students.forEach(s => attendance[currentDay][s.id] = status);
+            saveAll();
+        }
+
+        function saveNote(id, val) { notes[id] = val; saveAll(); }
+
+        function renderCalendar() {
+            const container = document.getElementById('calendarEventsList');
+            container.innerHTML = calendarEvents.map(e => `
+                <div style="padding:10px; background:#0f172a; border-radius:8px; margin-top:6px; display:flex; justify-content:space-between; font-size:0.8rem; border: 1px solid #1e293b;">
+                    <span>📌 <strong style="color:var(--gold-light);">${e.title}</strong> (${e.date})</span>
+                    <button onclick="deleteCalendarEvent(${e.id})" style="color:var(--rose-main); border:none; background:none; cursor:pointer;">حذف</button>
+                </div>
+            `).join('');
+        }
+
+        function addCalendarEvent(e) {
+            e.preventDefault();
+            const title = document.getElementById('eventTitle').value;
+            const date = document.getElementById('eventDate').value;
+            const type = document.getElementById('eventType').value;
+            calendarEvents.push({ id: Date.now(), title, date, type });
+            saveAll();
+            document.getElementById('eventTitle').value = '';
+            document.getElementById('eventDate').value = '';
+        }
+
+        function deleteCalendarEvent(id) { calendarEvents = calendarEvents.filter(e => e.id !== id); saveAll(); }
+
+        function renderMeals() {
+            const container = document.getElementById('mealsContainer');
+            container.innerHTML = meals.map(m => `
+                <div style="padding:10px; background:#0f172a; border-radius:8px; margin-top:6px; font-size:0.8rem; display:flex; justify-content:space-between; border: 1px solid #1e293b;">
+                    <span>🍕 <strong>${m.name}</strong>: ${m.item}</span>
+                    <button onclick="deleteMeal(${m.id})" style="color:var(--rose-main); border:none; background:none; cursor:pointer;">حذف</button>
+                </div>
+            `).join('');
+        }
+
+        function addMeal(e) {
+            e.preventDefault();
+            const name = document.getElementById('mealStu').value;
+            const item = document.getElementById('mealItem').value;
+            meals.push({ id: Date.now(), name, item });
+            saveAll();
+            document.getElementById('mealStu').value = '';
+            document.getElementById('mealItem').value = '';
+        }
+
+        function deleteMeal(id) { meals = meals.filter(m => m.id !== id); saveAll(); }
+
+        function renderCustomGroups() {
+            const container = document.getElementById('customGroupsList');
+            container.innerHTML = customGroups.map(g => `
+                <div style="padding:10px; background:#0f172a; border-radius:8px; margin-top:6px; font-size:0.8rem; display:flex; justify-content:space-between; border: 1px solid #1e293b;">
+                    <span>👥 <strong>${g.name}</strong> (المشرف: ${g.leader})</span>
+                    <button onclick="deleteCustomGroup(${g.id})" style="color:var(--rose-main); border:none; background:none; cursor:pointer;">حذف</button>
+                </div>
+            `).join('');
+        }
+
+        function addCustomGroup(e) {
+            e.preventDefault();
+            const name = document.getElementById('groupName').value;
+            const leader = document.getElementById('groupLeader').value;
+            customGroups.push({ id: Date.now(), name, leader });
+            saveAll();
+            document.getElementById('groupName').value = '';
+            document.getElementById('groupLeader').value = '';
+        }
+
+        function deleteCustomGroup(id) { customGroups = customGroups.filter(g => g.id !== id); saveAll(); }
+
+        function openStudentModal() {
+            document.getElementById('studentModalOverlay').classList.add('active');
+        }
+
+        function closeStudentModal() {
+            document.getElementById('studentModalOverlay').classList.remove('active');
+            document.getElementById('modalStuName').value = '';
+            document.getElementById('modalStuClass').value = '';
+            document.getElementById('modalStuCode').value = '';
+            document.getElementById('modalStuPhone').value = '';
+        }
+
+        function saveNewStudent(e) {
+            e.preventDefault();
+            const name = document.getElementById('modalStuName').value.trim();
+            const className = document.getElementById('modalStuClass').value.trim();
+            let code = document.getElementById('modalStuCode').value.trim();
+            const phone = document.getElementById('modalStuPhone').value.trim();
+
+            if (!code) {
+                code = "أ-" + (students.length + 101);
+            }
+
+            if (name && className) {
+                students.push({ id: Date.now().toString(), code, name, className, phone: phone || "" });
+                saveAll();
+                closeStudentModal();
+            }
+        }
+
+        function deleteStudent(id) {
+            if (confirm("هل أنت متأكد من حذف هذا الطالب من قائمة النادي؟")) {
+                students = students.filter(s => s.id !== id);
+                saveAll();
+            }
+        }
+
+        function updateAdminStaff() {
+            adminStaff.librarian = document.getElementById('adminLibrarian').value;
+            adminStaff.head = document.getElementById('adminHead').value;
+            adminStaff.security = document.getElementById('adminSecurity').value;
+            saveAll();
+        }
+
+        function renderAll() {
+            renderAttendance();
+            renderBorrowedBooks();
+            renderCompetitions();
+            renderCalendar();
+            renderMeals();
+            renderCustomGroups();
+        }
+    </script>
+</body>
+</html>
+
